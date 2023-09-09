@@ -208,5 +208,5 @@ Neste trabalho, foram apresentadas características e propriedades inferenciais 
 <br>
 
 <p align="center">
-  <img src="refs.png" alt="Refs" width="699">
+  <img src="refs.png" alt="Refs" width="733">
 </p>
