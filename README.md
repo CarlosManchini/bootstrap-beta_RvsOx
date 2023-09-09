@@ -149,18 +149,64 @@ O método *bootstrap* é um método computacionalmente intensivo que consiste na
 	Seja $\theta=(\alpha,\beta)^\top$ o vetor paramétrico da distribuição beta e $\widehat{\theta}$ um estimador qualquer de $\theta$.
 	A correção *bootstrap* para $\widehat{\theta}$ pode ser descrita da seguinte forma:
 
-1. Estima-se $\theta=(\alpha,\beta)^\top,$ a partir da amostra original obtendo $\hat{\theta}$;
-2. A partir das estimativas obtidas, geram-se B reamostras *bootstrap* $x^*_b$ sendo elas ocorrências da distribuição Beta $(\hat{\alpha},\hat{\beta})$ com parâmetro $\hat{\theta}$;
-3. Para cada reamostra *bootstrap* obtém-se as réplicas $\hat{\theta}^*_b$ de $\hat{\theta}$;
+1. Estima-se $\theta=(\alpha,\beta)^\top,$ a partir da amostra original obtendo $\hat{\theta}$ ;
+2. A partir das estimativas obtidas, geram-se B reamostras *bootstrap* $x^*_b$ sendo elas ocorrências da distribuição Beta $(\hat{\alpha},\hat{\beta})$ com parâmetro $\hat{\theta}$ ;
+3. Para cada reamostra *bootstrap* obtém-se as réplicas $\hat{\theta}^*_b$ de $\hat{\theta}$ ;
 4. Obtenha uma estimativa *bootstrap* do viés de $\hat{\theta}$, $\hat{B}_\text{boot}(\hat{\theta})=\bar{\theta^*}-\hat{\theta}$ em que
   
 $\bar{\theta*}= \frac{1}{B}\sum^B_{b=1} \theta_b*$  ;
 
-5. Por fim, o estimador corrigido por *bootstrap* é dado por $\hat{\theta*}=\hat{\theta}-\hat{B}_{boot}(\hat{\theta})= 2\hat{\theta}-\bar{\theta^*}$.
+5. Por fim, o estimador corrigido por *bootstrap* é dado por $\hat{\theta*}=\hat{\theta}-\hat{B}_{boot}(\hat{\theta})= 2\hat{\theta}-\bar{\theta^*}$ .
 
 
 
-Para geração das reamostras \textit{bootstrap} (item 2 no algoritmo) foi testada a utilização de ambos EMM e EMM.  Os melhores resultados foram observados quando gera-se as pseudoamostras pelas estimativas do EMV, portanto, o consideramos no método *bootstrap* paramétrico.
+Para geração das reamostras *bootstrap* (item 2 no algoritmo) foi testada a utilização de ambos EMM e EMM.  Os melhores resultados foram observados quando gera-se as pseudoamostras pelas estimativas do EMV, portanto, o consideramos no método *bootstrap* paramétrico.
+
+### 4. Resultados
+
+Para avaliar numericamente os estimadores dos parâmetros foi realizado um estudo de simulações de Monte Carlo. As implementações computacionais foram desenvolvidas em linguagem `R` e `Ox` visando a comparação do desempenho destes \textit{softwares}. Foram consideradas $R=5000$ réplicas de Monte Carlo e $B=1000$ reamostras *bootstrap* com tamanhos amostrais $n \in \{30, 50, 100, 500 \}$. No procedimento de maximização da função de log-verossimilhança foi utilizado o método Quasi-Newton BFGS [[12]](#fim) com primeira derivada analítica. Os valores iniciais exigidos pelo algoritmo de otimização foram dados pelas estimativas obtidas pelo método dos momentos, no sentido de acelerar a convergência da função. Fato, este confirmado durante a programação. 
+As medidas estatísticas calculadas foram: média, viés, viés relativo percentual (VR), erro padrão e erro quadrático médio (EQM).
+
+ As Tabelas 1 e 2 apresentam, respectivamente, os resultados numéricos da avaliação dos estimadores com parâmetros $\alpha=5$ e $\beta=3$. 
+	Como esperado, observa-se semelhança nas estimativas de ambos *softwares*. É notável que os estimadores corrigidos, denotados por $\hat{\theta}\*$ e $\bar{\theta}\*$, fornecem estimativas menos viesadas comparativamente à suas versões não corrigidas em todos tamanhos amostrais tanto em `R` quanto em `Ox`.
+	Por exemplo, na Tabela 1 para $n=30$ com o `R`, o VR de $\hat{\alpha}$ foi reduzido de $11.98\%$ para $-0.24\%$ com estimador 
+ $\hat{\alpha}\*$
+ pelo método *bootstrap*. Exemplificando para o parâmetro $\beta$ na Tabela 2 considerando o `Ox`,  observa-se com $n=50$, o relevante  decréscimo de VR, inicialmente com $5.86\%$  para $\hat{\beta}$ enquanto que sua versão corrigida com VR= $-0.5\%$. Comparando apenas os estimadores corrigidos, constata-se que $\hat{\theta}\*$ apresenta melhor desempenho que $\bar{\theta}\*$. Isso se deve ao fato das reamostras serem geradas da distribuição beta avaliada nas estimativas do EMV.
+	Desconsiderando a correção, nota-se que os EMM apresentam desempenho mais adequado em relação aos EMV, pois são menos viesados para os parâmetros $\alpha$ e $\beta$.
+	Em relação ao EQM não houve mudanças expressivas, porém percebe-se que conforme a amostra aumenta, há decréscimo no EQM de todos estimadores.
+	
+
+<p align="center">
+  <img src="tab1.png" alt="Tabela1" width="510">
+</p>
+<p align="center">
+  <img src="tab2.png" alt="Tabela2" width="510">
+</p>
+
+
+	
+A velocidade de processamento dos softwares  `R`  e `Ox` podem ser comparadas na Tabela 3. Lembrando que o número de réplicas de Monte Carlo foi fixado em $R=1000$ e o número de reamostras *bootstrap* em $B=500$. O tempo de execução dos programas foi em todos casos mais lento com a linguagem `R`. Por exemplo, com o menor tamanho amostral $30$, a compilação do script contendo a correção *bootstrap* demorou 24 minutos no `R` enquanto que em `Ox` durou apenas 58 segundos. Desconsiderando o \textit{bootstrap}, observa-se na linguagem `Ox` a execução do programa para todos tamanhos amostrais em menos de 1 segundo. Já no `R`, para $n=500$, a compilação levou 8 segundos. Em uma análise geral, obteve-se desempenho satisfatório em ambos \textit{softwares} quando não há um método computacional intensivo. Porém, a inclusão do método *bootstrap* confirmou a prevalência da linguagem `Ox` no quesito velocidade.
+
+
+
+<p align="center">
+  <img src="tab3.png" alt="Tabela3" width="590">
+</p>
+
+
+### 4. Conclusões
+
+Neste trabalho, foram apresentadas características e propriedades inferenciais da distribuição beta combinado a aplicação do método *bootstrap*. 
+	A avaliação numérica dos parâmetros da distribuição demonstrou o comportamento de estimadores usuais e corrigidos em diferentes cenários. Por meio de simulação de Monte Carlo evidenciou-se um desempenho superior dos estimadores corrigidos por *bootstrap* comparativamente às respectivas versões não corrigidas pois o viés das estimativas foi acentuadamente reduzido.	
+	Dessa forma, visto sua eficácia, recomenda-se o uso do método *bootstrap* para correção tratando-se da estimação dos parâmetros da distribuição beta, principalmente em tamanhos amostrais pequenos.
+ 
+ A velocidade de processamento entre os \textit{softwares} `R` e `Ox` foi destacadamente grande. `Ox` foi mais rápido na compilação dos programas. Ainda, um aplicativo foi desenvolvido em `R Shiny` para possibilitar maior acessibilidade ao uso da estatística computaciona. Para acesso: https://ufsm.shinyapps.io/app_betamc/
 	
 
  <a id="fim"></a>
+ 
+<br>
+
+<p align="center">
+  <img src="refs.png" alt="Refs" width="660">
+</p>
