@@ -200,7 +200,7 @@ Neste trabalho, foram apresentadas características e propriedades inferenciais 
 	A avaliação numérica dos parâmetros da distribuição demonstrou o comportamento de estimadores usuais e corrigidos em diferentes cenários. Por meio de simulação de Monte Carlo evidenciou-se um desempenho superior dos estimadores corrigidos por *bootstrap* comparativamente às respectivas versões não corrigidas pois o viés das estimativas foi acentuadamente reduzido.	
 	Dessa forma, visto sua eficácia, recomenda-se o uso do método *bootstrap* para correção tratando-se da estimação dos parâmetros da distribuição beta, principalmente em tamanhos amostrais pequenos.
  
- A velocidade de processamento entre os \textit{softwares} `R` e `Ox` foi destacadamente grande. `Ox` foi mais rápido na compilação dos programas. Ainda, um aplicativo foi desenvolvido em `R Shiny` para possibilitar maior acessibilidade ao uso da estatística computaciona. Para acesso: https://ufsm.shinyapps.io/app_betamc/
+ A velocidade de processamento entre os \textit{softwares} `R` e `Ox` foi destacadamente grande. `Ox` foi mais rápido na compilação dos programas. Ainda, um aplicativo foi desenvolvido em `R Shiny` para possibilitar maior acessibilidade ao uso da estatística computacional. Para acesso: https://ufsm.shinyapps.io/app_betamc/
 	
 
  <a id="fim"></a>
